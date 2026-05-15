@@ -19,7 +19,7 @@ VaultQuest is a sophisticated Android application designed to help users track t
 - **Language**: Kotlin
 - **Persistence**: Room Database (SQLite)
 - **UI Architecture**: Multiple Activities with Intent-based navigation.
-- **Styling**: Material Design 3 with a custom premium theme.
+- **Styling**: Modern Material Design 3 with the new "Indigo & Rose" premium theme for a vibrant user experience.
 - **Testing**: JUnit for logic verification.
 
 ## Submission Requirements
