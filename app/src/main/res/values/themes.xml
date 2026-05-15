@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.VaultQuest" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/vault_blue</item>
+        <item name="android:windowBackground">@color/vault_light_bg</item>
+        <item name="android:statusBarColor">@color/vault_blue</item>
+    </style>
+
+    <style name="Theme.VaultQuest" parent="Base.Theme.VaultQuest" />
+
+    <style name="CircleImage">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="PremiumCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/vault_card_bg</item>
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+</resources>

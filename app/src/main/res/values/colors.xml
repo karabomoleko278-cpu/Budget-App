@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Brand Colors: Indigo & Rose -->
+    <color name="vault_blue">#6366F1</color> <!-- New Indigo Primary -->
+    <color name="vault_light_bg">#F8FAFC</color> <!-- Light Slate Background -->
+    <color name="vault_card_bg">#FFFFFF</color>
+
+    <color name="vault_green">#10B981</color> <!-- Emerald Success -->
+    <color name="vault_red">#F43F5E</color> <!-- Rose Error -->
+    <color name="vault_text_primary">#0F172A</color> <!-- Slate 900 -->
+    <color name="vault_text_secondary">#64748B</color> <!-- Slate 500 -->
+    
+    <color name="primary">#6366F1</color>
+    <color name="secondary">#F43F5E</color>
+    <color name="error">#F43F5E</color>
+    <color name="divider">#E2E8F0</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="dark_background">#020617</color>
+    <color name="dark_surface">#0F172A</color>
+</resources>

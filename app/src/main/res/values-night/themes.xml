@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.VaultQuest" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/vault_blue</item>
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="android:statusBarColor">@color/dark_background</item>
+    </style>
+
+    <style name="PremiumCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/dark_surface</item>
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+</resources>
