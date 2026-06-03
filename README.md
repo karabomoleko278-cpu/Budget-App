@@ -1,7 +1,7 @@
 # 💸 Budgetly — Smart Student Budget Tracker
 
 > **PROG7313 · Portfolio of Evidence (Final) · Group ""**
-> A modern, offline-first Android budgeting app built in Kotlin with a Cloud Firestore backend, analytical charting, a colour-coded goal gauge, biometric security and CSV export — dressed in a premium **Indigo & Rose** theme.
+> A modern, offline-first Android budgeting app built in Kotlin with a Cloud Firestore backend, analytical charting, dressed in a premium **Indigo & Rose** theme.
 
 <p>
   <img alt="Platform" src="https://img.shields.io/badge/Platform-Android%2024%2B-3DDC84?logo=android&logoColor=white">
