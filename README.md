@@ -19,7 +19,6 @@
 | --- | --- |
 | 🎬 **YouTube Demo (unlisted)** | `🔗 PLACEHOLDER — paste your unlisted YouTube link here` |
 | 📦 **Production APK** | `🔗 PLACEHOLDER — app/build/outputs/apk/release/app-release-unsigned.apk` (also published as a build artifact on every CI run — see the **Actions** tab) |
-| 💾 **Repository** | https://github.com/karabomoleko278-cpu/Budget-App |
 
 ---
 
