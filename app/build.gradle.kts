@@ -65,15 +65,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
-    // Firebase (Cloud Firestore + offline persistence) via the BoM
+    // Firebase Realtime Database (+ disk persistence for offline-first) via the BoM
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.database)
     implementation(libs.kotlinx.coroutines.play.services)
 
-    // Biometric authentication (Custom Feature 1: App Lock)
-    implementation(libs.androidx.biometric)
+    // WorkManager (Custom Feature 2: Recurring Transactions background scheduler)
+    implementation(libs.androidx.work.runtime)
 
-    // Charting (analytical graphs + goal threshold lines)
+    // Charting (spending-trend line graph + goal threshold lines)
     implementation(libs.mpandroidchart)
 
     testImplementation(libs.junit)

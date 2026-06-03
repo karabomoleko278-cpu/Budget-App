@@ -66,7 +66,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_xs"
-                        android:text="Stay between these thresholds to keep the dashboard gauge green." />
+                        android:text="Stay between these thresholds to keep the budget bar green." />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -148,7 +148,7 @@
                 android:textAllCaps="false"
                 app:cornerRadius="@dimen/radius_md" />
 
-            <!-- ===== Security (Custom Feature 1) ===== -->
+            <!-- ===== Budget Notifications (Custom Feature 1) ===== -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -174,17 +174,17 @@
                             style="@style/Vault.Text.SectionHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Biometric App Lock" />
+                            android:text="Budget Notifications" />
 
                         <TextView
                             style="@style/Vault.Text.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Require fingerprint / face to open Budgetly." />
+                            android:text="Alert me when I'm close to or over my monthly limit." />
                     </LinearLayout>
 
                     <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switchBiometric"
+                        android:id="@+id/switchNotifications"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="@dimen/touch_target_min"
@@ -192,18 +192,18 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- ===== Data (Custom Feature 2) ===== -->
+            <!-- ===== Recurring Transactions (Custom Feature 2) ===== -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnExportCsv"
+                android:id="@+id/btnRecurring"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/touch_target_min"
                 android:layout_marginTop="@dimen/space_md"
-                android:backgroundTint="@color/vault_green"
-                android:text="Export Transactions (CSV)"
+                android:backgroundTint="@color/vault_blue"
+                android:text="Manage Recurring Transactions"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:cornerRadius="@dimen/radius_md"
-                app:icon="@android:drawable/ic_menu_save"
+                app:icon="@android:drawable/ic_menu_rotate"
                 app:iconTint="@color/white" />
 
             <com.google.android.material.button.MaterialButton

@@ -12,8 +12,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
 
-    <!-- Custom Feature 1: Biometric App Lock -->
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <!-- Custom Feature 1: Budget Notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".BudgetlyApp"
@@ -43,6 +43,7 @@
         <activity android:name=".ui.CategoryTotalsActivity" />
         <activity android:name=".ui.GoalSettingsActivity" />
         <activity android:name=".ui.ReportsActivity" />
+        <activity android:name=".ui.RecurringActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

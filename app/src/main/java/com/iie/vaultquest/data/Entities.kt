@@ -85,3 +85,37 @@ data class Goal(
     val minGoal: Double = 0.0,
     val maxGoal: Double = 0.0
 )
+
+/**
+ * Custom Feature 2: a rule that auto-creates [Entry] rows on a schedule
+ * (DAILY / WEEKLY / MONTHLY). [nextDueDate] is advanced each time the rule fires.
+ */
+@Entity(
+    tableName = "recurring",
+    foreignKeys = [
+        ForeignKey(
+            entity = User::class,
+            parentColumns = ["id"],
+            childColumns = ["userId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Category::class,
+            parentColumns = ["id"],
+            childColumns = ["categoryId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["userId"]), Index(value = ["categoryId"])]
+)
+data class RecurringTransaction(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val userId: Long,
+    val categoryId: Long,
+    val description: String,
+    val amount: Double,
+    val isIncome: Boolean,
+    val frequency: String,   // DAILY | WEEKLY | MONTHLY
+    val nextDueDate: Long,
+    val active: Boolean = true
+)

@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.iie.vaultquest.data.AppDatabase
-import com.iie.vaultquest.data.FirestoreSyncManager
+import com.iie.vaultquest.data.RealtimeSyncManager
 import com.iie.vaultquest.data.User
 import com.iie.vaultquest.databinding.ActivityRegisterBinding
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -33,7 +33,6 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
             if (password != confirm) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -48,10 +47,10 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this@RegisterActivity, "Username already exists", Toast.LENGTH_SHORT).show()
                 } else {
                     val newId = db.appDao().insertUser(User(username = username, password = password))
-                    Log.d(TAG, "Registered user '$username' with id=$newId")
+                    Log.d(TAG, "Registered user '$username' id=$newId")
                     if (newId > 0) {
                         // Mirror to the cloud (password is intentionally NOT uploaded).
-                        FirestoreSyncManager.pushUser(User(id = newId, username = username, password = ""))
+                        RealtimeSyncManager.pushUser(User(id = newId, username = username, password = ""))
                     }
                     Toast.makeText(this@RegisterActivity, "Account created successfully", Toast.LENGTH_SHORT).show()
                     finish()

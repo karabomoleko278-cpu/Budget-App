@@ -1,17 +1,20 @@
 package com.iie.vaultquest
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.iie.vaultquest.data.AppDatabase
-import com.iie.vaultquest.data.FirestoreSyncManager
+import com.iie.vaultquest.data.RealtimeSyncManager
 import com.iie.vaultquest.data.SessionManager
 import com.iie.vaultquest.databinding.ActivityMainBinding
-import com.iie.vaultquest.domain.GoalStatusCalculator
-import com.iie.vaultquest.domain.GoalZone
+import com.iie.vaultquest.domain.BudgetHealthEvaluator
+import com.iie.vaultquest.domain.BudgetLevel
 import com.iie.vaultquest.ui.*
+import com.iie.vaultquest.work.RecurringEngine
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -27,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     private val session by lazy { SessionManager(this) }
     private var userId: Long = -1
     private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("en", "ZA"))
+
+    private val notifPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { /* best-effort */ }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +50,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.welcomeText.text = username
 
+        requestNotificationPermission()
         setupClickListeners()
-        syncFromCloud()
+        syncAndCatchUp()
         updateDashboard()
     }
 
@@ -54,16 +61,23 @@ class MainActivity : AppCompatActivity() {
         updateDashboard()
     }
 
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notifPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
     /**
-     * Hydrate the local Room cache from Cloud Firestore on entry (off the main
-     * thread). Room's Flows then push any new rows into the dashboard and gauge
-     * reactively. Failures (e.g. offline) fall back to the local cache.
+     * On entry: pull the latest data from the Realtime Database into Room, and run
+     * the recurring-transactions catch-up. Both off the main thread; Room Flows
+     * update the dashboard reactively. Failures fall back to the local cache.
      */
-    private fun syncFromCloud() {
+    private fun syncAndCatchUp() {
         lifecycleScope.launch(CoroutineExceptionHandler { _, e ->
-            Log.e(TAG, "Cloud sync error: ${e.message}", e)
+            Log.e(TAG, "Sync/catch-up error: ${e.message}", e)
         }) {
-            FirestoreSyncManager.pullAll(userId, db.appDao())
+            RealtimeSyncManager.pullAll(userId, db.appDao())
+            RecurringEngine.processDue(db.appDao())
         }
     }
 
@@ -120,10 +134,9 @@ class MainActivity : AppCompatActivity() {
                 Triple(entries, goals, categories)
             }.collect { (entries, _, categories) ->
                 try {
-                    val currentMonthEntries = entries.filter { isCurrentMonth(it.date) }
-
-                    val totalIncome = currentMonthEntries.filter { it.isIncome }.sumOf { it.amount }
-                    val totalExpenses = currentMonthEntries.filter { !it.isIncome }.sumOf { it.amount }
+                    val monthEntries = entries.filter { isCurrentMonth(it.date) }
+                    val totalIncome = monthEntries.filter { it.isIncome }.sumOf { it.amount }
+                    val totalExpenses = monthEntries.filter { !it.isIncome }.sumOf { it.amount }
                     val savings = totalIncome - totalExpenses
 
                     binding.totalSpent.text = currencyFormat.format(totalIncome - totalExpenses)
@@ -131,28 +144,25 @@ class MainActivity : AppCompatActivity() {
                     binding.expensesValue.text = currencyFormat.format(totalExpenses)
                     binding.savingsValue.text = currencyFormat.format(savings)
 
-                    // ----- Visual goal gauge: spend vs Min/Max (from preferences) -----
+                    // ----- Linear budget bar: spend vs Min/Max (from preferences) -----
                     val minGoal = session.getOverallMin(userId)
                     val maxGoal = session.getOverallMax(userId)
-                    val status = GoalStatusCalculator.evaluate(totalExpenses, minGoal, maxGoal)
-                    binding.goalGauge.setStatus(status)
+                    val health = BudgetHealthEvaluator.assess(totalExpenses, minGoal, maxGoal)
+                    binding.budgetBar.setHealth(health)
 
-                    if (status.zone == GoalZone.UNSET) {
-                        binding.gaugeHint.text = "Set your monthly goals to activate tracking."
+                    if (health.level == BudgetLevel.NONE) {
+                        binding.budgetBarHeadline.text = "Set a monthly budget to start tracking"
+                        binding.budgetBarSub.text = "Tap Manage to add your Min & Max limits."
                         binding.goalStatus.text = "Goal: Not Set"
-                        binding.dashboardGoalText.text = "No monthly goals set. Tap Manage to add Min & Max limits."
+                        binding.dashboardGoalText.text = "No monthly goals set yet."
                     } else {
-                        binding.gaugeHint.text = when (status.zone) {
-                            GoalZone.SAFE -> "✅ Safe zone — between your min and max."
-                            GoalZone.NEAR_LIMIT -> "⚠️ Approaching your maximum limit."
-                            GoalZone.UNDER -> "🔵 Below your minimum spend target."
-                            GoalZone.BREACHED -> "🔴 Maximum budget breached!"
-                            else -> ""
-                        }
-                        binding.goalStatus.text = "${status.label} • ${currencyFormat.format(totalExpenses)}"
+                        binding.budgetBarHeadline.text =
+                            "${health.headline} • ${currencyFormat.format(totalExpenses)}"
+                        binding.budgetBarSub.text =
+                            "Budget range ${currencyFormat.format(minGoal)} – ${currencyFormat.format(maxGoal)}"
+                        binding.goalStatus.text = health.headline
                         binding.dashboardGoalText.text =
-                            "Monthly range: ${currencyFormat.format(minGoal)} – ${currencyFormat.format(maxGoal)}\n" +
-                            "Spent so far: ${currencyFormat.format(totalExpenses)}"
+                            "Spent ${currencyFormat.format(totalExpenses)} of ${currencyFormat.format(maxGoal)} this month."
                     }
 
                     val recent = entries.sortedByDescending { it.date }.take(5)

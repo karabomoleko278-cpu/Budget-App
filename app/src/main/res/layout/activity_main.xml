@@ -252,7 +252,7 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Goal Tracker Gauge: this month's spend vs Min/Max goals -->
+            <!-- Linear budget bar: this month's spend vs Min/Max -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -265,28 +265,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center_horizontal"
                     android:padding="16dp">
 
                     <TextView
                         style="@style/Vault.Text.SectionHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="This Month vs Goals" />
-
-                    <com.iie.vaultquest.ui.components.GoalGaugeView
-                        android:id="@+id/goalGauge"
-                        android:layout_width="@dimen/gauge_size"
-                        android:layout_height="@dimen/gauge_size"
-                        android:layout_marginTop="8dp" />
+                        android:text="This Month's Budget" />
 
                     <TextView
-                        android:id="@+id/gaugeHint"
+                        android:id="@+id/budgetBarHeadline"
+                        style="@style/Vault.Text.Body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:text="Set a monthly budget to start tracking" />
+
+                    <com.iie.vaultquest.ui.components.LinearBudgetBar
+                        android:id="@+id/budgetBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" />
+
+                    <TextView
+                        android:id="@+id/budgetBarSub"
                         style="@style/Vault.Text.Caption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Set your monthly goals to activate tracking." />
+                        android:layout_marginTop="8dp"
+                        android:text="Tap Manage to add your Min &amp; Max limits." />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

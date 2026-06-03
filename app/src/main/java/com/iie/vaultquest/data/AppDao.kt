@@ -63,7 +63,26 @@ interface AppDao {
     suspend fun getGoalForCategory(userId: Long, categoryId: Long): Goal?
 
     // ---------------------------------------------------------------------
-    // Upsert helpers used by the Firestore -> Room pull (idempotent merge).
+    // Recurring transactions (Custom Feature 2)
+    // ---------------------------------------------------------------------
+    @Insert
+    suspend fun insertRecurring(rule: RecurringTransaction): Long
+
+    @Update
+    suspend fun updateRecurring(rule: RecurringTransaction)
+
+    @Delete
+    suspend fun deleteRecurring(rule: RecurringTransaction)
+
+    @Query("SELECT * FROM recurring WHERE userId = :userId AND active = 1")
+    fun getRecurringForUser(userId: Long): Flow<List<RecurringTransaction>>
+
+    /** Rules whose next occurrence is due (used by the scheduler). */
+    @Query("SELECT * FROM recurring WHERE active = 1 AND nextDueDate <= :now")
+    suspend fun getDueRecurring(now: Long): List<RecurringTransaction>
+
+    // ---------------------------------------------------------------------
+    // Upsert helpers used by the Realtime Database -> Room pull (idempotent).
     // ---------------------------------------------------------------------
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertUser(user: User)

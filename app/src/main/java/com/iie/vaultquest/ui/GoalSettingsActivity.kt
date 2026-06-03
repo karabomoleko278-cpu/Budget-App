@@ -13,11 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iie.vaultquest.R
 import com.iie.vaultquest.data.AppDatabase
-import com.iie.vaultquest.data.FirestoreSyncManager
 import com.iie.vaultquest.data.Goal
+import com.iie.vaultquest.data.RealtimeSyncManager
 import com.iie.vaultquest.data.SessionManager
 import com.iie.vaultquest.databinding.ActivityGoalSettingsBinding
-import com.iie.vaultquest.ui.security.BiometricAuthenticator
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -50,13 +49,20 @@ class GoalSettingsActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
-
         binding.btnSetBudgets.setOnClickListener { showSetBudgetDialog() }
         binding.btnSaveGoals.setOnClickListener { saveOverallGoals() }
-        binding.btnExportCsv.setOnClickListener { exportCsv() }
+        binding.btnRecurring.setOnClickListener {
+            startActivity(Intent(this, RecurringActivity::class.java).putExtra("USER_ID", userId))
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
         binding.btnLogout.setOnClickListener { logout() }
 
-        setupBiometricToggle()
+        binding.switchNotifications.isChecked = session.areNotificationsEnabled
+        binding.switchNotifications.setOnCheckedChangeListener { _, checked ->
+            session.areNotificationsEnabled = checked
+            Log.d(TAG, "Budget notifications ${if (checked) "enabled" else "disabled"}")
+            toast(if (checked) "Notifications on" else "Notifications off")
+        }
     }
 
     override fun onResume() {
@@ -66,8 +72,7 @@ class GoalSettingsActivity : AppCompatActivity() {
     }
 
     // ---------------------------------------------------------------------
-    // Overall monthly Min / Max goals — stored in preferences (per user) to
-    // avoid the category foreign-key constraint, and mirrored to Firestore.
+    // Overall monthly Min / Max goals — stored in preferences, mirrored to RTDB.
     // ---------------------------------------------------------------------
     private fun loadOverallGoals() {
         try {
@@ -84,18 +89,12 @@ class GoalSettingsActivity : AppCompatActivity() {
         val min = binding.editMinGoal.text.toString().toDoubleOrNull() ?: 0.0
         val max = binding.editMaxGoal.text.toString().toDoubleOrNull() ?: 0.0
 
-        if (max <= 0.0) {
-            toast("Enter a maximum monthly goal")
-            return
-        }
-        if (min > max) {
-            toast("Minimum cannot exceed maximum")
-            return
-        }
+        if (max <= 0.0) { toast("Enter a maximum monthly goal"); return }
+        if (min > max) { toast("Minimum cannot exceed maximum"); return }
 
         try {
             session.setOverallGoals(userId, min, max)
-            FirestoreSyncManager.pushOverallGoal(userId, min, max)
+            RealtimeSyncManager.pushOverallGoal(userId, min, max)
             Log.d(TAG, "Overall goals saved: min=$min max=$max")
             toast("Monthly goals saved")
         } catch (e: Exception) {
@@ -105,7 +104,7 @@ class GoalSettingsActivity : AppCompatActivity() {
     }
 
     // ---------------------------------------------------------------------
-    // Per-category budgets (stored in Room, valid category foreign keys)
+    // Per-category budgets
     // ---------------------------------------------------------------------
     private fun loadBudgets() {
         lifecycleScope.launch {
@@ -159,11 +158,8 @@ class GoalSettingsActivity : AppCompatActivity() {
                     .setPositiveButton("Save") { _, _ ->
                         val selectedCategory = categories[spinner.selectedItemPosition]
                         val amount = amountInput.text.toString().toDoubleOrNull()
-                        if (amount != null && amount > 0) {
-                            saveBudget(selectedCategory.id, amount)
-                        } else {
-                            toast("Invalid amount")
-                        }
+                        if (amount != null && amount > 0) saveBudget(selectedCategory.id, amount)
+                        else toast("Invalid amount")
                     }
                     .setNegativeButton("Cancel", null)
                     .show()
@@ -180,56 +176,12 @@ class GoalSettingsActivity : AppCompatActivity() {
                 val goal = existingGoal?.copy(amount = amount)
                     ?: Goal(userId = userId, categoryId = categoryId, amount = amount)
                 val id = db.appDao().setGoals(goal)
-                FirestoreSyncManager.pushGoal(goal.copy(id = id))
+                RealtimeSyncManager.pushGoal(goal.copy(id = id))
                 toast("Budget saved")
                 loadBudgets()
             } catch (e: Exception) {
                 Log.e(TAG, "saveBudget failed: ${e.message}", e)
                 toast("Could not save budget")
-            }
-        }
-    }
-
-    // ---------------------------------------------------------------------
-    // Custom Feature 1: Biometric App Lock toggle
-    // ---------------------------------------------------------------------
-    private fun setupBiometricToggle() {
-        binding.switchBiometric.isChecked = session.isBiometricEnabled
-        binding.switchBiometric.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val authenticator = BiometricAuthenticator(this)
-                if (authenticator.canAuthenticate()) {
-                    session.isBiometricEnabled = true
-                    lifecycleScope.launch {
-                        db.appDao().getUserById(userId)?.let { session.saveUser(userId, it.username) }
-                    }
-                    Log.d(TAG, "Biometric lock enabled")
-                    toast("Biometric lock enabled")
-                } else {
-                    binding.switchBiometric.isChecked = false
-                    toast("No fingerprint/face enrolled on this device")
-                }
-            } else {
-                session.isBiometricEnabled = false
-                Log.d(TAG, "Biometric lock disabled")
-                toast("Biometric lock disabled")
-            }
-        }
-    }
-
-    // ---------------------------------------------------------------------
-    // Custom Feature 2: CSV export
-    // ---------------------------------------------------------------------
-    private fun exportCsv() {
-        lifecycleScope.launch {
-            try {
-                val entries = db.appDao().getEntriesOnce(userId)
-                val categories = db.appDao().getCategoriesOnce(userId)
-                val file = ExportManager.exportAndShare(this@GoalSettingsActivity, entries, categories)
-                if (file == null) toast("Nothing to export yet")
-            } catch (e: Exception) {
-                Log.e(TAG, "exportCsv failed: ${e.message}", e)
-                toast("Export failed")
             }
         }
     }

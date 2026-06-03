@@ -1,6 +1,5 @@
 package com.iie.vaultquest.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,24 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.data.Entry as ChartEntry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.iie.vaultquest.R
 import com.iie.vaultquest.data.AppDatabase
 import com.iie.vaultquest.data.SessionManager
 import com.iie.vaultquest.databinding.ActivityReportsBinding
-import com.iie.vaultquest.domain.PeriodRange
-import com.iie.vaultquest.domain.ReportPeriod
+import com.iie.vaultquest.domain.SpendTrend
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
+import java.util.Calendar
 import java.util.Locale
 
 private const val TAG = "ReportsActivity"
@@ -38,10 +31,11 @@ class ReportsActivity : AppCompatActivity() {
     private var userId: Long = -1
     private val currency = NumberFormat.getCurrencyInstance(Locale("en", "ZA"))
 
-    private var selectedPeriod = ReportPeriod.MONTH
+    /** 0 = Day, 1 = Week, 2 = Month */
+    private var period = 2
 
     private val errorHandler = CoroutineExceptionHandler { _, e ->
-        Log.e(TAG, "Unhandled coroutine error while building report: ${e.message}", e)
+        Log.e(TAG, "Report coroutine error: ${e.message}", e)
     }
 
     private val textColor: Int
@@ -68,33 +62,27 @@ class ReportsActivity : AppCompatActivity() {
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
 
-        setupCharts()
-        setupPeriodToggle()
-    }
-
-    private fun setupPeriodToggle() {
+        setupChart()
         binding.periodToggle.check(R.id.btnMonth)
         binding.periodToggle.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (!isChecked) return@addOnButtonCheckedListener
-            selectedPeriod = when (checkedId) {
-                R.id.btnDay -> ReportPeriod.DAY
-                R.id.btnWeek -> ReportPeriod.WEEK
-                else -> ReportPeriod.MONTH
+            period = when (checkedId) {
+                R.id.btnDay -> 0
+                R.id.btnWeek -> 1
+                else -> 2
             }
-            Log.d(TAG, "Period changed to $selectedPeriod")
             loadData()
         }
         loadData()
     }
 
-    private fun setupCharts() {
-        binding.barChart.apply {
+    private fun setupChart() {
+        binding.lineChart.apply {
             description.isEnabled = false
             legend.isEnabled = false
             setScaleEnabled(false)
             setPinchZoom(false)
-            setDrawValueAboveBar(true)
-            setFitBars(true)
+            setTouchEnabled(true)
             axisRight.isEnabled = false
             axisLeft.axisMinimum = 0f
             axisLeft.textColor = textColor
@@ -103,93 +91,77 @@ class ReportsActivity : AppCompatActivity() {
             xAxis.granularity = 1f
             xAxis.textColor = textColor
         }
+    }
 
-        binding.pieChart.apply {
-            setUsePercentValues(true)
-            description.isEnabled = false
-            isDrawHoleEnabled = true
-            setHoleColor(Color.TRANSPARENT)
-            setTransparentCircleAlpha(0)
-            holeRadius = 58f
-            setDrawCenterText(true)
-            legend.isEnabled = true
-            legend.textColor = textColor
+    private fun startOfPeriod(): Long {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0)
         }
+        when (period) {
+            0 -> { /* today */ }
+            1 -> cal.set(Calendar.DAY_OF_WEEK, cal.firstDayOfWeek)
+            else -> cal.set(Calendar.DAY_OF_MONTH, 1)
+        }
+        return cal.timeInMillis
     }
 
     private fun loadData() {
         lifecycleScope.launch(errorHandler) {
             try {
-                val startDate = PeriodRange.startOf(selectedPeriod)
-                val entries = db.appDao().getEntriesOnce(userId)
-                    .filter { it.date >= startDate && !it.isIncome }
-                val categories = db.appDao().getCategoriesOnce(userId)
+                val start = startOfPeriod()
+                val expenses = db.appDao().getEntriesOnce(userId)
+                    .filter { it.date >= start && !it.isIncome }
+                val total = expenses.sumOf { it.amount }
                 val minGoal = session.getOverallMin(userId)
                 val maxGoal = session.getOverallMax(userId)
 
-                val spendingByCategory = linkedMapOf<String, Double>()
-                var totalSpent = 0.0
-                entries.forEach { entry ->
-                    val name = categories.find { it.id == entry.categoryId }?.name ?: "Other"
-                    spendingByCategory[name] = (spendingByCategory[name] ?: 0.0) + entry.amount
-                    totalSpent += entry.amount
-                }
+                binding.totalSpentText.text = "Total: ${currency.format(total)}"
 
-                binding.totalSpentText.text = "Total: ${currency.format(totalSpent)}"
-
-                if (spendingByCategory.isEmpty()) {
-                    binding.barChart.visibility = View.GONE
-                    binding.pieChart.visibility = View.GONE
+                val trend = SpendTrend.cumulativeByDay(expenses.map { it.date to it.amount }, start)
+                if (trend.isEmpty()) {
+                    binding.lineChart.visibility = View.GONE
                     binding.emptyStateText.visibility = View.VISIBLE
-                    binding.barChart.clear()
-                    binding.pieChart.clear()
+                    binding.lineChart.clear()
                 } else {
-                    binding.barChart.visibility = View.VISIBLE
-                    binding.pieChart.visibility = View.VISIBLE
+                    binding.lineChart.visibility = View.VISIBLE
                     binding.emptyStateText.visibility = View.GONE
-                    renderBarChart(spendingByCategory, minGoal, maxGoal)
-                    renderPieChart(spendingByCategory, currency.format(totalSpent))
+                    renderLine(trend.map { ChartEntry(it.dayOffset.toFloat(), it.cumulative.toFloat()) }, minGoal, maxGoal)
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to load report data: ${e.message}", e)
+                Log.e(TAG, "loadData failed: ${e.message}", e)
             }
         }
     }
 
-    private fun renderBarChart(data: Map<String, Double>, minGoal: Double, maxGoal: Double) {
+    private fun renderLine(points: List<ChartEntry>, minGoal: Double, maxGoal: Double) {
         try {
-            val labels = data.keys.toList()
-            val barEntries = labels.mapIndexed { i, name ->
-                BarEntry(i.toFloat(), (data[name] ?: 0.0).toFloat())
+            val set = LineDataSet(points, "Cumulative spend").apply {
+                color = getColor(R.color.vault_blue)
+                lineWidth = 2.5f
+                setDrawCircles(true)
+                setCircleColor(getColor(R.color.vault_blue))
+                circleRadius = 3f
+                setDrawValues(false)
+                setDrawFilled(true)
+                fillColor = getColor(R.color.vault_blue)
+                fillAlpha = 40
+                mode = LineDataSet.Mode.CUBIC_BEZIER
             }
 
-            val set = BarDataSet(barEntries, "Spent").apply {
-                colors = ColorTemplate.MATERIAL_COLORS.toList()
-                valueTextColor = textColor
-                valueTextSize = 10f
-            }
-            val barData = BarData(set).apply { barWidth = 0.55f }
-
-            binding.barChart.apply {
-                this.data = barData
-                xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-                xAxis.labelCount = labels.size
-                xAxis.labelRotationAngle = if (labels.size > 4) -35f else 0f
-
+            binding.lineChart.apply {
+                data = LineData(set)
                 axisLeft.removeAllLimitLines()
                 if (minGoal > 0) axisLeft.addLimitLine(goalLine(minGoal, "Min", R.color.vault_green))
                 if (maxGoal > 0) axisLeft.addLimitLine(goalLine(maxGoal, "Max", R.color.vault_red))
-                axisLeft.axisMaximum = maxOf(
-                    (data.values.maxOrNull() ?: 0.0),
-                    maxGoal
-                ).toFloat() * 1.15f
-
-                animateY(700)
+                val dataMax = points.maxOfOrNull { it.y }?.toDouble() ?: 0.0
+                axisLeft.axisMaximum = (maxOf(dataMax, maxGoal) * 1.15).toFloat().coerceAtLeast(1f)
+                animateX(700)
                 invalidate()
             }
-            Log.d(TAG, "Bar chart rendered (${labels.size} categories, min=$minGoal max=$maxGoal)")
+            Log.d(TAG, "Line chart rendered (${points.size} points, min=$minGoal max=$maxGoal)")
         } catch (e: Exception) {
-            Log.e(TAG, "renderBarChart error: ${e.message}", e)
+            Log.e(TAG, "renderLine failed: ${e.message}", e)
         }
     }
 
@@ -202,31 +174,6 @@ class ReportsActivity : AppCompatActivity() {
             textSize = 10f
             enableDashedLine(12f, 6f, 0f)
             labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
-        }
-    }
-
-    private fun renderPieChart(data: Map<String, Double>, totalText: String) {
-        try {
-            val pieEntries = data.map { (name, amount) -> PieEntry(amount.toFloat(), name) }
-            val set = PieDataSet(pieEntries, "").apply {
-                sliceSpace = 3f
-                colors = (ColorTemplate.MATERIAL_COLORS.toList()
-                        + ColorTemplate.JOYFUL_COLORS.toList())
-            }
-            val pieData = PieData(set).apply {
-                setValueFormatter(PercentFormatter(binding.pieChart))
-                setValueTextSize(11f)
-                setValueTextColor(Color.WHITE)
-            }
-            binding.pieChart.apply {
-                this.data = pieData
-                centerText = "Spent\n$totalText"
-                setCenterTextColor(textColor)
-                animateY(700)
-                invalidate()
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "renderPieChart error: ${e.message}", e)
         }
     }
 }

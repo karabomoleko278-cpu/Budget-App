@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "123456789012",
+    "firebase_url": "https://budgetly-app-default-rtdb.firebaseio.com",
     "project_id": "budgetly-app",
     "storage_bucket": "budgetly-app.appspot.com"
   },

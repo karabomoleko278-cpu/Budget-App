@@ -5,7 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [User::class, Category::class, Entry::class, Goal::class], version = 2, exportSchema = false)
+@Database(
+    entities = [User::class, Category::class, Entry::class, Goal::class, RecurringTransaction::class],
+    version = 3,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appDao(): AppDao
 
@@ -18,7 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "vault_quest_db"
+                    "budgetly_db"
                 ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance

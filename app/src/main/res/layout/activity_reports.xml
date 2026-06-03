@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_sm"
-        android:text="Spending Reports"
+        android:text="Spending Trend"
         app:layout_constraintBottom_toBottomOf="@id/btnBack"
         app:layout_constraintStart_toEndOf="@id/btnBack"
         app:layout_constraintTop_toTopOf="@id/btnBack" />
@@ -40,7 +40,6 @@
             android:orientation="vertical"
             android:padding="@dimen/space_md">
 
-            <!-- Period toggle: Day / Week / Month -->
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/periodToggle"
                 android:layout_width="match_parent"
@@ -81,11 +80,11 @@
                 android:layout_marginTop="@dimen/space_md"
                 android:text="Total: R 0.00" />
 
-            <!-- Analytical bar chart: amount per category + Min/Max goal lines -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_lg"
                 app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="@dimen/radius_lg"
                 app:cardElevation="2dp">
@@ -100,15 +99,14 @@
                         style="@style/Vault.Text.SectionHeader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Spending by Category" />
+                        android:text="Cumulative Spend vs Goals" />
 
-                    <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/barChart"
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lineChart"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/chart_height"
                         android:layout_marginTop="@dimen/space_sm" />
 
-                    <!-- Legend for the goal threshold lines -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -142,36 +140,6 @@
                             android:layout_marginStart="@dimen/space_xs"
                             android:text="Max goal" />
                     </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Category breakdown pie chart -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_md"
-                android:layout_marginBottom="@dimen/space_lg"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:cardCornerRadius="@dimen/radius_lg"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/space_md">
-
-                    <TextView
-                        style="@style/Vault.Text.SectionHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Category Breakdown" />
-
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/pieChart"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/chart_height"
-                        android:layout_marginTop="@dimen/space_sm" />
 
                     <TextView
                         android:id="@+id/emptyStateText"

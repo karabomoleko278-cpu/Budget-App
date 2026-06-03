@@ -21,7 +21,8 @@ import androidx.lifecycle.lifecycleScope
 import com.iie.vaultquest.data.AppDatabase
 import com.iie.vaultquest.data.Category
 import com.iie.vaultquest.data.Entry
-import com.iie.vaultquest.data.FirestoreSyncManager
+import com.iie.vaultquest.data.RealtimeSyncManager
+import com.iie.vaultquest.data.SessionManager
 import com.iie.vaultquest.databinding.ActivityAddEntryBinding
 import kotlinx.coroutines.launch
 import java.io.File
@@ -164,7 +165,7 @@ class AddEntryActivity : AppCompatActivity() {
                     defaults.forEach { name ->
                         val category = Category(userId = userId, name = name)
                         val id = db.appDao().insertCategory(category)
-                        FirestoreSyncManager.pushCategory(category.copy(id = id))
+                        RealtimeSyncManager.pushCategory(category.copy(id = id))
                     }
                     return@collect // Re-trigger via collector
                 }
@@ -219,8 +220,25 @@ class AddEntryActivity : AppCompatActivity() {
                     isIncome = isIncome
                 )
                 val entryId = db.appDao().insertEntry(entry)
-                FirestoreSyncManager.pushEntry(entry.copy(id = entryId))
-                Log.i(TAG, "Entry saved to Room + queued to Firestore (id=$entryId)")
+                RealtimeSyncManager.pushEntry(entry.copy(id = entryId))
+                Log.i(TAG, "Entry saved to Room + queued to Realtime DB (id=$entryId)")
+
+                // Custom Feature 1: warn if this expense pushes the month near/over budget.
+                if (!isIncome) {
+                    val session = SessionManager(this@AddEntryActivity)
+                    if (session.areNotificationsEnabled) {
+                        val startOfMonth = Calendar.getInstance().apply {
+                            set(Calendar.DAY_OF_MONTH, 1); set(Calendar.HOUR_OF_DAY, 0)
+                            set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0)
+                        }.timeInMillis
+                        val monthExpenses = db.appDao().getEntriesOnce(userId)
+                            .filter { !it.isIncome && it.date >= startOfMonth }.sumOf { it.amount }
+                        NotificationHelper.notifyBudgetStatus(
+                            this@AddEntryActivity, monthExpenses,
+                            session.getOverallMin(userId), session.getOverallMax(userId)
+                        )
+                    }
+                }
                 val msg = if (isIncome) "💰 Money in! Saved!" else "💸 Ka-ching! Expense saved!"
                 Toast.makeText(this@AddEntryActivity, msg, Toast.LENGTH_LONG).show()
                 finish()

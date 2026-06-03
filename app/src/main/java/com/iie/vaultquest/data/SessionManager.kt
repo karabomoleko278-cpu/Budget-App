@@ -4,26 +4,23 @@ import android.content.Context
 import android.content.SharedPreferences
 
 /**
- * Lightweight wrapper around [SharedPreferences] for per-user app settings
- * (not transactional financial records — those live in Room + Firestore):
- *  - whether the Biometric App Lock (Custom Feature 1) is enabled
- *  - the last authenticated user, so we can re-unlock biometrically without
- *    retyping the password
+ * Lightweight per-user app settings (not transactional financial records):
+ *  - the last authenticated user
+ *  - whether Budget Notifications (Custom Feature 1) are enabled
  *  - the overall monthly Min/Max spending thresholds that drive the dashboard
- *    gauge and the Reports goal lines. These are user-level thresholds (not tied
- *    to a category), so storing them here avoids the category foreign-key
- *    constraint on the `goals` table — they are also mirrored to Firestore.
+ *    budget bar and the Reports goal lines. Stored here (not in the `goals`
+ *    table) so they are not bound by the category foreign key, and mirrored to
+ *    the Realtime Database.
  */
 class SessionManager(context: Context) {
 
     private val prefs: SharedPreferences =
         context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-    var isBiometricEnabled: Boolean
-        get() = prefs.getBoolean(KEY_BIOMETRIC, false)
-        set(value) = prefs.edit().putBoolean(KEY_BIOMETRIC, value).apply()
+    var areNotificationsEnabled: Boolean
+        get() = prefs.getBoolean(KEY_NOTIFICATIONS, true)
+        set(value) = prefs.edit().putBoolean(KEY_NOTIFICATIONS, value).apply()
 
-    /** Persist the last successfully authenticated user for biometric re-entry. */
     fun saveUser(userId: Long, username: String) {
         prefs.edit()
             .putLong(KEY_USER_ID, userId)
@@ -33,7 +30,6 @@ class SessionManager(context: Context) {
 
     val savedUserId: Long get() = prefs.getLong(KEY_USER_ID, -1L)
     val savedUsername: String get() = prefs.getString(KEY_USERNAME, "") ?: ""
-    fun hasSavedUser(): Boolean = savedUserId != -1L
 
     // ---------------------------------------------------------------------
     // Overall monthly Min / Max spending goals (per user).
@@ -51,9 +47,6 @@ class SessionManager(context: Context) {
     fun getOverallMax(userId: Long): Double =
         prefs.getString(keyMax(userId), null)?.toDoubleOrNull() ?: 0.0
 
-    fun hasOverallGoals(userId: Long): Boolean = getOverallMax(userId) > 0.0
-
-    /** Called on explicit logout — clears the biometric shortcut (goals persist per user). */
     fun clearSession() {
         prefs.edit()
             .remove(KEY_USER_ID)
@@ -65,8 +58,8 @@ class SessionManager(context: Context) {
     private fun keyMax(userId: Long) = "goal_max_$userId"
 
     companion object {
-        private const val PREFS_NAME = "vault_session"
-        private const val KEY_BIOMETRIC = "biometric_enabled"
+        private const val PREFS_NAME = "budgetly_session"
+        private const val KEY_NOTIFICATIONS = "notifications_enabled"
         private const val KEY_USER_ID = "saved_user_id"
         private const val KEY_USERNAME = "saved_username"
     }
