@@ -1,13 +1,18 @@
 package com.iie.vaultquest.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.iie.vaultquest.data.AppDatabase
+import com.iie.vaultquest.data.FirestoreSyncManager
 import com.iie.vaultquest.data.User
 import com.iie.vaultquest.databinding.ActivityRegisterBinding
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+
+private const val TAG = "RegisterActivity"
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -34,12 +39,20 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            lifecycleScope.launch {
+            lifecycleScope.launch(CoroutineExceptionHandler { _, e ->
+                Log.e(TAG, "Registration error: ${e.message}", e)
+                Toast.makeText(this@RegisterActivity, "Registration failed, please retry", Toast.LENGTH_SHORT).show()
+            }) {
                 val existing = db.appDao().getUserByUsername(username)
                 if (existing != null) {
                     Toast.makeText(this@RegisterActivity, "Username already exists", Toast.LENGTH_SHORT).show()
                 } else {
-                    db.appDao().insertUser(User(username = username, password = password))
+                    val newId = db.appDao().insertUser(User(username = username, password = password))
+                    Log.d(TAG, "Registered user '$username' with id=$newId")
+                    if (newId > 0) {
+                        // Mirror to the cloud (password is intentionally NOT uploaded).
+                        FirestoreSyncManager.pushUser(User(id = newId, username = username, password = ""))
+                    }
                     Toast.makeText(this@RegisterActivity, "Account created successfully", Toast.LENGTH_SHORT).show()
                     finish()
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)

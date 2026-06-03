@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
+    <!-- Receipt capture -->
     <external-files-path name="my_images" path="Pictures" />
+    <!-- Custom Feature 2: CSV export sharing -->
+    <cache-path name="exports" path="exports/" />
+    <external-cache-path name="external_exports" path="exports/" />
 </paths>

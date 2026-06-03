@@ -23,5 +23,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "VaultQuest"
+rootProject.name = "Budgetly"
 include(":app")

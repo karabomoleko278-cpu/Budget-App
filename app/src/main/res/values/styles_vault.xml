@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Part 3 design-system styles (typography scale + accessible icon button).
+    Kept in a separate file so the base PremiumButton/PremiumCard/CircleImage
+    styles defined elsewhere are not duplicated. Colours come from the existing
+    Indigo & Rose palette via theme attributes, so these adapt to the app theme.
+-->
+<resources>
+
+    <!-- Base style enabling dot-notation hierarchy -->
+    <style name="Vault" />
+
+    <!-- Borderless icon button guaranteed to meet the 48dp touch target. -->
+    <style name="Vault.IconButton">
+        <item name="android:layout_width">@dimen/touch_target_min</item>
+        <item name="android:layout_height">@dimen/touch_target_min</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:padding">@dimen/space_sm</item>
+    </style>
+
+    <!-- Typography scale -->
+    <style name="Vault.Text">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="Vault.Text.Display">
+        <item name="android:textSize">@dimen/text_display</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Vault.Text.Title">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Vault.Text.SectionHeader">
+        <item name="android:textSize">@dimen/text_subtitle</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="Vault.Text.Body">
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="Vault.Text.Caption">
+        <item name="android:textSize">@dimen/text_caption</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+</resources>

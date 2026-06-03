@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="VaultQuest"
+                android:text="Budgetly"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary"
@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="By continuing you agree to VaultQuest Terms &amp; Conditions"
+            android:text="By continuing you agree to Budgetly Terms &amp; Conditions"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"

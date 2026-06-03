@@ -9,7 +9,12 @@
     <color name="vault_card_bg">#FFFFFF</color>
 
     <color name="vault_green">#10B981</color> <!-- Emerald Success -->
+    <color name="vault_amber">#F59E0B</color> <!-- Amber Caution (gauge near-limit) -->
     <color name="vault_red">#F43F5E</color> <!-- Rose Error -->
+
+    <!-- Indigo tints used by accents / gradients -->
+    <color name="vault_blue_dark">#4F46E5</color>
+    <color name="vault_blue_light">#818CF8</color>
     <color name="vault_text_primary">#0F172A</color> <!-- Slate 900 -->
     <color name="vault_text_secondary">#64748B</color> <!-- Slate 500 -->
     

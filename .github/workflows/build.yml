@@ -1,0 +1,64 @@
+name: VaultQuest CI
+
+# Build + test on every push or pull request that targets main,
+# and allow manual runs from the Actions tab.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build, Test & Package APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Set up Android SDK
+        # Exposes ANDROID_HOME / ANDROID_SDK_ROOT and installs the
+        # command-line tools, platform-tools and build-tools.
+        uses: android-actions/setup-android@v3
+
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./gradlew
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest --stacktrace
+
+      - name: Run Android lint
+        run: ./gradlew lintDebug --stacktrace
+        continue-on-error: true
+
+      - name: Clean build — assemble debug & release APKs
+        run: ./gradlew clean assembleDebug assembleRelease --stacktrace
+
+      - name: Upload production APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: VaultQuest-APKs
+          path: |
+            app/build/outputs/apk/debug/*.apk
+            app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+
+      - name: Upload unit-test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: app/build/reports/tests/testDebugUnitTest
+          if-no-files-found: ignore

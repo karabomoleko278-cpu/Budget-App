@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.iie.vaultquest.data.AppDatabase
 import com.iie.vaultquest.data.Category
 import com.iie.vaultquest.data.Entry
+import com.iie.vaultquest.data.FirestoreSyncManager
 import com.iie.vaultquest.databinding.ActivityAddEntryBinding
 import kotlinx.coroutines.launch
 import java.io.File
@@ -160,8 +161,10 @@ class AddEntryActivity : AppCompatActivity() {
                     } else {
                         listOf("Food", "Transport", "Rent", "Groceries", "Entertainment", "Savings", "Emergency")
                     }
-                    defaults.forEach { 
-                        db.appDao().insertCategory(Category(userId = userId, name = it))
+                    defaults.forEach { name ->
+                        val category = Category(userId = userId, name = name)
+                        val id = db.appDao().insertCategory(category)
+                        FirestoreSyncManager.pushCategory(category.copy(id = id))
                     }
                     return@collect // Re-trigger via collector
                 }
@@ -215,8 +218,9 @@ class AddEntryActivity : AppCompatActivity() {
                     photoPath = photoPath,
                     isIncome = isIncome
                 )
-                db.appDao().insertEntry(entry)
-                Log.i(TAG, "Entry saved successfully to RoomDB")
+                val entryId = db.appDao().insertEntry(entry)
+                FirestoreSyncManager.pushEntry(entry.copy(id = entryId))
+                Log.i(TAG, "Entry saved to Room + queued to Firestore (id=$entryId)")
                 val msg = if (isIncome) "💰 Money in! Saved!" else "💸 Ka-ching! Expense saved!"
                 Toast.makeText(this@AddEntryActivity, msg, Toast.LENGTH_LONG).show()
                 finish()

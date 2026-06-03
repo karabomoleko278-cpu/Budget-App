@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Dark-mode overrides for the Indigo & Rose palette. Redefining the semantic
+    vault_* tokens here keeps every screen consistent in dark mode, whether it
+    references ?attr/... or @color/vault_* directly.
+-->
+<resources>
+    <!-- Indigo reads brighter on dark surfaces -->
+    <color name="vault_blue">#818CF8</color>
+    <color name="vault_blue_dark">#6366F1</color>
+    <color name="vault_blue_light">#A5B4FC</color>
+
+    <!-- Surfaces / backgrounds (Slate) -->
+    <color name="vault_light_bg">#020617</color>
+    <color name="vault_card_bg">#0F172A</color>
+    <color name="surface">#0F172A</color>
+    <color name="divider">#1E293B</color>
+
+    <!-- Status colours -->
+    <color name="vault_green">#34D399</color>
+    <color name="vault_amber">#FBBF24</color>
+    <color name="vault_red">#FB7185</color>
+
+    <!-- Text -->
+    <color name="vault_text_primary">#F1F5F9</color>
+    <color name="vault_text_secondary">#94A3B8</color>
+    <color name="text_secondary">#94A3B8</color>
+
+    <color name="primary">#818CF8</color>
+    <color name="secondary">#FB7185</color>
+</resources>
