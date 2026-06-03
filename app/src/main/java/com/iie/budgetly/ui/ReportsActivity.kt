@@ -39,11 +39,7 @@ class ReportsActivity : AppCompatActivity() {
     }
 
     private val textColor: Int
-        get() {
-            val tv = android.util.TypedValue()
-            theme.resolveAttribute(android.R.attr.textColorPrimary, tv, true)
-            return tv.data
-        }
+        get() = getColor(R.color.ivory_cream)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,16 +59,18 @@ class ReportsActivity : AppCompatActivity() {
         }
 
         setupChart()
-        binding.periodToggle.check(R.id.btnMonth)
-        binding.periodToggle.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (!isChecked) return@addOnButtonCheckedListener
-            period = when (checkedId) {
-                R.id.btnDay -> 0
-                R.id.btnWeek -> 1
-                else -> 2
+        
+        binding.periodTabs.addOnTabSelectedListener(object : com.google.android.material.tabs.TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: com.google.android.material.tabs.TabLayout.Tab?) {
+                period = tab?.position ?: 2
+                loadData()
             }
-            loadData()
-        }
+            override fun onTabUnselected(tab: com.google.android.material.tabs.TabLayout.Tab?) {}
+            override fun onTabReselected(tab: com.google.android.material.tabs.TabLayout.Tab?) {}
+        })
+        
+        // Default to Month (position 2)
+        binding.periodTabs.getTabAt(2)?.select()
         loadData()
     }
 
@@ -116,7 +114,7 @@ class ReportsActivity : AppCompatActivity() {
                 val minGoal = session.getOverallMin(userId)
                 val maxGoal = session.getOverallMax(userId)
 
-                binding.totalSpentText.text = "Total: ${currency.format(total)}"
+                binding.totalSpentText.text = "TOTAL: ${currency.format(total)}"
 
                 val trend = SpendTrend.cumulativeByDay(expenses.map { it.date to it.amount }, start)
                 if (trend.isEmpty()) {
@@ -137,23 +135,23 @@ class ReportsActivity : AppCompatActivity() {
     private fun renderLine(points: List<ChartEntry>, minGoal: Double, maxGoal: Double) {
         try {
             val set = LineDataSet(points, "Cumulative spend").apply {
-                color = getColor(R.color.vault_blue)
-                lineWidth = 2.5f
+                color = getColor(R.color.soft_gold)
+                lineWidth = 3f
                 setDrawCircles(true)
-                setCircleColor(getColor(R.color.vault_blue))
-                circleRadius = 3f
+                setCircleColor(getColor(R.color.ivory_cream))
+                circleRadius = 4f
                 setDrawValues(false)
                 setDrawFilled(true)
-                fillColor = getColor(R.color.vault_blue)
-                fillAlpha = 40
+                fillColor = getColor(R.color.soft_gold)
+                fillAlpha = 60
                 mode = LineDataSet.Mode.CUBIC_BEZIER
             }
 
             binding.lineChart.apply {
                 data = LineData(set)
                 axisLeft.removeAllLimitLines()
-                if (minGoal > 0) axisLeft.addLimitLine(goalLine(minGoal, "Min", R.color.vault_green))
-                if (maxGoal > 0) axisLeft.addLimitLine(goalLine(maxGoal, "Max", R.color.vault_red))
+                if (minGoal > 0) axisLeft.addLimitLine(goalLine(minGoal, "Min", R.color.income_green))
+                if (maxGoal > 0) axisLeft.addLimitLine(goalLine(maxGoal, "Max", R.color.expense_red))
                 val dataMax = points.maxOfOrNull { it.y }?.toDouble() ?: 0.0
                 axisLeft.axisMaximum = (maxOf(dataMax, maxGoal) * 1.15).toFloat().coerceAtLeast(1f)
                 animateX(700)

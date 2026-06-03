@@ -114,14 +114,14 @@ class AddEntryActivity : AppCompatActivity() {
             binding.headerTitle.text = "Add Income"
             binding.description.hint = "Income source"
             binding.btnSave.text = "Save Income"
-            binding.lblAmount.text = "Income Amount"
-            binding.lblDescription.text = "Source"
+            binding.tilAmount.hint = "Income Amount"
+            binding.tilDescription.hint = "Source"
         } else {
             binding.headerTitle.text = "Add Expense"
             binding.description.hint = "Expense title"
             binding.btnSave.text = "Save Expense"
-            binding.lblAmount.text = "Expense Amount"
-            binding.lblDescription.text = "Title"
+            binding.tilAmount.hint = "Expense Amount"
+            binding.tilDescription.hint = "Title"
         }
     }
 

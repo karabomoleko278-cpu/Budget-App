@@ -100,15 +100,23 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        binding.tabHome.setOnClickListener { /* Already here */ }
-        binding.tabBudget.setOnClickListener {
-            startActivity(Intent(this, EntryListActivity::class.java).putExtra("USER_ID", userId))
-        }
-        binding.tabReports.setOnClickListener {
-            startActivity(Intent(this, ReportsActivity::class.java).putExtra("USER_ID", userId))
-        }
-        binding.tabProfile.setOnClickListener {
-            startActivity(Intent(this, GoalSettingsActivity::class.java).putExtra("USER_ID", userId))
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> true
+                R.id.nav_budget -> {
+                    startActivity(Intent(this, EntryListActivity::class.java).putExtra("USER_ID", userId))
+                    true
+                }
+                R.id.nav_analysis -> {
+                    startActivity(Intent(this, ReportsActivity::class.java).putExtra("USER_ID", userId))
+                    true
+                }
+                R.id.nav_goals -> {
+                    startActivity(Intent(this, GoalSettingsActivity::class.java).putExtra("USER_ID", userId))
+                    true
+                }
+                else -> false
+            }
         }
 
         binding.btnViewAll.setOnClickListener {
@@ -148,18 +156,11 @@ class MainActivity : AppCompatActivity() {
                     val minGoal = session.getOverallMin(userId)
                     val maxGoal = session.getOverallMax(userId)
                     val health = BudgetHealthEvaluator.assess(totalExpenses, minGoal, maxGoal)
-                    binding.budgetBar.setHealth(health)
 
                     if (health.level == BudgetLevel.NONE) {
-                        binding.budgetBarHeadline.text = "Set a monthly budget to start tracking"
-                        binding.budgetBarSub.text = "Tap Manage to add your Min & Max limits."
                         binding.goalStatus.text = "Goal: Not Set"
                         binding.dashboardGoalText.text = "No monthly goals set yet."
                     } else {
-                        binding.budgetBarHeadline.text =
-                            "${health.headline} • ${currencyFormat.format(totalExpenses)}"
-                        binding.budgetBarSub.text =
-                            "Budget range ${currencyFormat.format(minGoal)} – ${currencyFormat.format(maxGoal)}"
                         binding.goalStatus.text = health.headline
                         binding.dashboardGoalText.text =
                             "Spent ${currencyFormat.format(totalExpenses)} of ${currencyFormat.format(maxGoal)} this month."

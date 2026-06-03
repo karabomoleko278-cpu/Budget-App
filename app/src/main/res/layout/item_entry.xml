@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/PremiumCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="4dp"
-    app:cardBackgroundColor="?attr/colorSurface"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="0dp">
+    android:layout_marginVertical="6dp"
+    android:layout_marginHorizontal="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp"
+        android:padding="16dp"
         android:gravity="center_vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -21,10 +20,10 @@
             android:layout_height="48dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_receipt"
-            android:background="?attr/colorSurfaceVariant"
-            android:padding="8dp"
+            android:background="@color/forest_green"
+            android:padding="10dp"
             app:shapeAppearanceOverlay="@style/CircleImage"
-            app:tint="@color/vault_blue" />
+            app:tint="@color/soft_gold" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -38,8 +37,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Expense Description"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="16sp"
+                android:textColor="@color/ivory_cream"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -47,17 +46,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Category"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="13sp" />
+                android:textColor="@color/ivory_cream"
+                android:textSize="14sp"
+                android:alpha="0.7" />
 
             <TextView
                 android:id="@+id/txtTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10:00"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="11sp"
-                android:alpha="0.7" />
+                android:textColor="@color/ivory_cream"
+                android:textSize="12sp"
+                android:alpha="0.5" />
         </LinearLayout>
 
         <TextView
@@ -65,9 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="R 0.00"
-            android:textColor="@color/vault_blue"
-            android:textSize="18sp"
+            android:textColor="@color/ivory_cream"
+            android:textSize="19sp"
             android:textStyle="bold" />
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

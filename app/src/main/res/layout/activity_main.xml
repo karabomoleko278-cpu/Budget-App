@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:background="@color/forest_green">
 
-    <!-- Top Header -->
+    <!-- Top Header Section -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="20dp"
+        android:padding="24dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -25,37 +25,26 @@
                 android:id="@+id/greetingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Good afternoon,"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="14sp" />
+                android:text="Good morning,"
+                android:textColor="@color/ivory_cream"
+                android:textSize="16sp" />
             <TextView
                 android:id="@+id/welcomeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="User"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="22sp"
+                android:textColor="@color/ivory_cream"
+                android:textSize="26sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/btnLogout"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_logout"
-            app:tint="?android:attr/textColorSecondary" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profileImage"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:src="@drawable/ic_vault_logo"
-            app:shapeAppearanceOverlay="@style/CircleImage"
-            android:padding="8dp"
-            android:background="@color/vault_blue"
-            app:tint="@color/white" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_logout"
+            app:tint="@color/ivory_cream" />
     </LinearLayout>
 
     <ScrollView
@@ -63,7 +52,7 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,88 +60,50 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Balance Card -->
-            <androidx.cardview.widget.CardView
+            <!-- Elevated textured balance card (Gold) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/balanceCard"
+                style="@style/GoldBalanceCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/vault_blue"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp">
+                android:layout_margin="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp">
+                    android:padding="28dp">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Available"
-                            android:textColor="@color/white"
-                            android:alpha="0.8" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="Student Saver"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Balance"
+                        android:textColor="@color/forest_green"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:alpha="0.8" />
 
                     <TextView
                         android:id="@+id/totalSpent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="R 0.00"
-                        android:textColor="@color/white"
-                        android:textSize="32sp"
+                        android:text="R 0,00"
+                        android:textColor="@color/ivory_cream"
+                        android:textSize="40sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/goalStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="8dp"
                         android:text="Goal: Not Set"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:alpha="0.7" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:orientation="horizontal">
-                        <Button
-                            android:id="@+id/btnAddExpense"
-                            style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="0dp"
-                            android:layout_height="56dp"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="8dp"
-                            android:text="Add Expense"
-                            android:textColor="@color/vault_blue"
-                            app:backgroundTint="@color/white"
-                            app:cornerRadius="28dp" />
-                        <Button
-                            android:id="@+id/btnAddIncome"
-                            style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="0dp"
-                            android:layout_height="56dp"
-                            android:layout_weight="1"
-                            android:layout_marginStart="8dp"
-                            android:text="Add Income"
-                            android:textColor="@color/vault_blue"
-                            app:backgroundTint="@color/white"
-                            app:cornerRadius="28dp" />
-                    </LinearLayout>
+                        android:textColor="@color/forest_green"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Stats Row -->
             <LinearLayout
@@ -161,248 +112,106 @@
                 android:layout_marginTop="24dp"
                 android:orientation="horizontal">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/PremiumCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    app:cardBackgroundColor="?attr/colorSurface"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
+                    android:layout_margin="4dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="16dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Income"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:textSize="12sp" />
+                            android:text="INCOME"
+                            android:textColor="@color/ivory_cream"
+                            android:textSize="10sp"
+                            android:alpha="0.7" />
                         <TextView
                             android:id="@+id/incomeValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:text="R 0.00"
-                            android:textColor="@color/vault_green"
+                            android:textColor="@color/income_green"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/PremiumCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginHorizontal="4dp"
-                    app:cardBackgroundColor="?attr/colorSurface"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
+                    android:layout_margin="4dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="16dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Expenses"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:textSize="12sp" />
+                            android:text="EXPENSES"
+                            android:textColor="@color/ivory_cream"
+                            android:textSize="10sp"
+                            android:alpha="0.7" />
                         <TextView
                             android:id="@+id/expensesValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:text="R 0.00"
-                            android:textColor="@color/vault_red"
+                            android:textColor="@color/expense_red"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/PremiumCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    app:cardBackgroundColor="?attr/colorSurface"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
+                    android:layout_margin="4dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="16dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Savings"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:textSize="12sp" />
+                            android:text="SAVINGS"
+                            android:textColor="@color/ivory_cream"
+                            android:textSize="10sp"
+                            android:alpha="0.7" />
                         <TextView
                             android:id="@+id/savingsValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:text="R 0.00"
-                            android:textColor="?android:attr/textColorPrimary"
+                            android:textColor="@color/savings_blue"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <!-- Linear budget bar: this month's spend vs Min/Max -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        style="@style/Vault.Text.SectionHeader"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="This Month's Budget" />
-
-                    <TextView
-                        android:id="@+id/budgetBarHeadline"
-                        style="@style/Vault.Text.Body"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textStyle="bold"
-                        android:text="Set a monthly budget to start tracking" />
-
-                    <com.iie.budgetly.ui.components.LinearBudgetBar
-                        android:id="@+id/budgetBar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp" />
-
-                    <TextView
-                        android:id="@+id/budgetBarSub"
-                        style="@style/Vault.Text.Caption"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Tap Manage to add your Min &amp; Max limits." />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Navigation Tabs -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/card_premium"
-                android:orientation="horizontal"
-                android:padding="8dp">
-
-                <LinearLayout
-                    android:id="@+id/tabHome"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_home_nav" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Home"
-                        android:textColor="@color/vault_blue"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabBudget"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_budget_nav"
-                        app:tint="@color/vault_text_secondary" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Budget"
-                        android:textColor="@color/vault_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabReports"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_reports_nav"
-                        app:tint="@color/vault_text_secondary" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Reports"
-                        android:textColor="@color/vault_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabProfile"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_target"
-                        app:tint="?android:attr/textColorSecondary" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Goals"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
             <!-- Monthly Goals Section -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="32dp"
+                android:paddingHorizontal="8dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Monthly Goals"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="18sp"
+                    android:textColor="@color/ivory_cream"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
                 <TextView
                     android:id="@+id/btnManageGoals"
@@ -410,30 +219,28 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:text="Manage"
-                    android:textColor="@color/vault_blue"
-                    android:padding="4dp"
+                    android:textColor="@color/soft_gold"
                     android:textStyle="bold" />
             </RelativeLayout>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
+                style="@style/PremiumCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp">
+                android:layout_marginHorizontal="8dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
                     <TextView
                         android:id="@+id/dashboardGoalText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Track your monthly budget limits here."
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:textSize="14sp" />
+                        android:textColor="@color/ivory_cream"
+                        android:alpha="0.8" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSetGoalNow"
@@ -442,22 +249,71 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Set New Goal"
-                        android:textColor="@color/vault_blue"
+                        android:textColor="@color/soft_gold"
                         android:padding="0dp" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Add Transaction Section (New) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:paddingHorizontal="8dp"
+                android:text="Add Transaction"
+                android:textColor="@color/ivory_cream"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddExpense"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginHorizontal="16dp"
+                    app:icon="@drawable/ic_logout"
+                    app:iconSize="32dp"
+                    app:iconPadding="0dp"
+                    app:iconGravity="textStart"
+                    app:cornerRadius="40dp"
+                    app:backgroundTint="@color/soft_gold"
+                    app:iconTint="@color/forest_green" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddIncome"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginHorizontal="16dp"
+                    app:icon="@drawable/ic_add"
+                    app:iconSize="32dp"
+                    app:iconPadding="0dp"
+                    app:iconGravity="textStart"
+                    app:cornerRadius="40dp"
+                    app:backgroundTint="@color/soft_gold"
+                    app:iconTint="@color/forest_green" />
+
+            </LinearLayout>
 
             <!-- Recent Transactions -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="32dp"
+                android:paddingHorizontal="8dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Recent Transactions"
-                    android:textColor="@color/vault_text_primary"
-                    android:textSize="18sp"
+                    android:textColor="@color/ivory_cream"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
                 <TextView
                     android:id="@+id/btnViewAll"
@@ -465,28 +321,38 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:text="View all"
-                    android:textColor="@color/vault_text_secondary"
-                    android:padding="4dp" />
+                    android:textColor="@color/soft_gold" />
             </RelativeLayout>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
+                style="@style/PremiumCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="32dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp">
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginBottom="32dp">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recentTransactionsList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:padding="12dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_entry" />
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </ScrollView>
+
+    <!-- Native Bottom Navigation View -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@color/forest_green"
+        app:itemIconTint="@color/ivory_cream"
+        app:itemTextColor="@color/ivory_cream"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:labelVisibilityMode="labeled" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

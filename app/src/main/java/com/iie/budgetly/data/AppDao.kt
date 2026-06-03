@@ -50,8 +50,8 @@ interface AppDao {
     // ---------------------------------------------------------------------
     // Goal operations (per-category budgets)
     // ---------------------------------------------------------------------
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun setGoals(goal: Goal): Long
+    @Upsert
+    suspend fun upsertGoal(goal: Goal): Long
 
     @Query("SELECT * FROM goals WHERE userId = :userId")
     fun getGoalsForUser(userId: Long): Flow<List<Goal>>
@@ -69,10 +69,10 @@ interface AppDao {
     suspend fun insertRecurring(rule: RecurringTransaction): Long
 
     @Update
-    suspend fun updateRecurring(rule: RecurringTransaction)
+    suspend fun updateRecurring(rule: RecurringTransaction): Int
 
     @Delete
-    suspend fun deleteRecurring(rule: RecurringTransaction)
+    suspend fun deleteRecurring(rule: RecurringTransaction): Int
 
     @Query("SELECT * FROM recurring WHERE userId = :userId AND active = 1")
     fun getRecurringForUser(userId: Long): Flow<List<RecurringTransaction>>
@@ -84,15 +84,12 @@ interface AppDao {
     // ---------------------------------------------------------------------
     // Upsert helpers used by the Realtime Database -> Room pull (idempotent).
     // ---------------------------------------------------------------------
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertUser(user: User)
+    @Upsert
+    suspend fun upsertUser(user: User): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertCategory(category: Category)
+    @Upsert
+    suspend fun upsertCategory(category: Category): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertEntry(entry: Entry)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertGoal(goal: Goal)
+    @Upsert
+    suspend fun upsertEntry(entry: Entry): Long
 }

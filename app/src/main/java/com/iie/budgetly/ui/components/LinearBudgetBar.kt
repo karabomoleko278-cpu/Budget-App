@@ -42,12 +42,12 @@ class LinearBudgetBar @JvmOverloads constructor(
 
     private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.divider)
+        color = ContextCompat.getColor(context, R.color.forest_green)
     }
     private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     private val tickPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.vault_text_primary)
+        color = ContextCompat.getColor(context, R.color.ivory_cream)
     }
 
     fun setHealth(newHealth: BudgetHealth) {
@@ -102,10 +102,10 @@ class LinearBudgetBar @JvmOverloads constructor(
 
     private fun colorFor(level: BudgetLevel): Int {
         val res = when (level) {
-            BudgetLevel.ON_TRACK -> R.color.vault_green
-            BudgetLevel.CAUTION, BudgetLevel.UNDER -> R.color.vault_amber
-            BudgetLevel.OVER -> R.color.vault_red
-            BudgetLevel.NONE -> R.color.divider
+            BudgetLevel.ON_TRACK -> R.color.income_green
+            BudgetLevel.CAUTION, BudgetLevel.UNDER -> R.color.soft_gold
+            BudgetLevel.OVER -> R.color.expense_red
+            BudgetLevel.NONE -> R.color.forest_green
         }
         return ContextCompat.getColor(context, res)
     }

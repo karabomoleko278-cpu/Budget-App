@@ -43,10 +43,10 @@ class EntryAdapter(
         
         if (entry.isIncome) {
             holder.amount.text = "+ ${format.format(entry.amount)}"
-            holder.amount.setTextColor(context.getColor(R.color.vault_green))
+            holder.amount.setTextColor(context.getColor(R.color.income_green))
         } else {
             holder.amount.text = "- ${format.format(entry.amount)}"
-            holder.amount.setTextColor(context.getColor(R.color.vault_red))
+            holder.amount.setTextColor(context.getColor(R.color.expense_red))
         }
         
         holder.time.text = entry.startTime
@@ -55,10 +55,10 @@ class EntryAdapter(
             try {
                 holder.icon.setImageURI(Uri.fromFile(File(entry.photoPath)))
             } catch (e: Exception) {
-                holder.icon.setImageResource(if (entry.isIncome) R.drawable.ic_vault else R.drawable.ic_receipt)
+                holder.icon.setImageResource(if (entry.isIncome) R.drawable.ic_nav_wallet else R.drawable.ic_receipt)
             }
         } else {
-            holder.icon.setImageResource(if (entry.isIncome) R.drawable.ic_vault else R.drawable.ic_receipt)
+            holder.icon.setImageResource(if (entry.isIncome) R.drawable.ic_nav_wallet else R.drawable.ic_receipt)
         }
     }
 

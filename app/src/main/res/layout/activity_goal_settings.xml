@@ -4,219 +4,228 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:background="@color/forest_green">
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        style="@style/Vault.IconButton"
-        android:layout_marginStart="@dimen/space_md"
-        android:layout_marginTop="@dimen/space_md"
-        android:contentDescription="Back"
-        android:src="@android:drawable/ic_menu_revert"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="?android:attr/textColorPrimary" />
-
-    <TextView
-        android:id="@+id/title"
-        style="@style/Vault.Text.Title"
-        android:layout_width="wrap_content"
+    <!-- Custom Top App Bar -->
+    <LinearLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_sm"
-        android:text="Goals &amp; Settings"
-        app:layout_constraintBottom_toBottomOf="@id/btnBack"
-        app:layout_constraintStart_toEndOf="@id/btnBack"
-        app:layout_constraintTop_toTopOf="@id/btnBack" />
+        android:orientation="horizontal"
+        android:padding="20dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/ivory_cream" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings &amp; Goals"
+            android:textColor="@color/ivory_cream"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/space_md">
+            android:padding="16dp">
 
-            <!-- ===== Monthly Min / Max goals ===== -->
-            <androidx.cardview.widget.CardView
+            <!-- Spending Goals Card -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/PremiumCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:cardCornerRadius="@dimen/radius_lg"
-                app:cardElevation="2dp">
-
+                android:layout_marginBottom="16dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/space_md">
+                    android:padding="20dp">
 
-                    <TextView
-                        style="@style/Vault.Text.SectionHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Monthly Spending Goals" />
-
-                    <TextView
-                        style="@style/Vault.Text.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/space_xs"
-                        android:text="Stay between these thresholds to keep the budget bar green." />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Spending Goals"
+                            android:textColor="@color/soft_gold"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <ImageButton
+                            android:id="@+id/btnSaveGoals"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_alignParentEnd="true"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_target"
+                            app:tint="@color/soft_gold" />
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/space_md"
+                        android:layout_marginTop="16dp"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tilMin"
-                            style="@style/PremiumTextInputLayout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/space_sm"
+                            android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:hint="Min (R)">
-
+                            android:hint="Set Minimum Goal"
+                            app:hintTextColor="@color/soft_gold"
+                            app:boxStrokeColor="@color/soft_gold"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editMinGoal"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/ivory_cream"
                                 android:inputType="numberDecimal" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tilMax"
-                            style="@style/PremiumTextInputLayout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/space_sm"
+                            android:layout_marginStart="8dp"
                             android:layout_weight="1"
-                            android:hint="Max (R)">
-
+                            android:hint="Set Maximum Goal"
+                            app:hintTextColor="@color/soft_gold"
+                            app:boxStrokeColor="@color/soft_gold"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editMaxGoal"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/ivory_cream"
                                 android:inputType="numberDecimal" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnSaveGoals"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/touch_target_min"
-                        android:layout_marginTop="@dimen/space_sm"
-                        android:backgroundTint="@color/vault_blue"
-                        android:text="Save Monthly Goals"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        app:cornerRadius="@dimen/radius_md" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- ===== Per-category budgets ===== -->
-            <TextView
-                style="@style/Vault.Text.SectionHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_lg"
-                android:layout_marginStart="@dimen/space_xs"
-                android:text="Category Budgets" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/budgetsRecyclerView"
+            <!-- Category Budgets Card -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/PremiumCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_sm"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_budget" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSetBudgets"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/touch_target_min"
-                android:layout_marginTop="@dimen/space_sm"
-                android:text="Set Category Budget"
-                android:textAllCaps="false"
-                app:cornerRadius="@dimen/radius_md" />
-
-            <!-- ===== Budget Notifications (Custom Feature 1) ===== -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_lg"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:cardCornerRadius="@dimen/radius_lg"
-                app:cardElevation="2dp">
-
+                android:layout_marginBottom="16dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/space_md">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Category Budgets"
+                            android:textColor="@color/soft_gold"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <ImageButton
+                            android:id="@+id/btnSetBudgets"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_alignParentEnd="true"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_add"
+                            app:tint="@color/soft_gold" />
+                    </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/budgetsRecyclerView"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_marginTop="12dp"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                        <TextView
-                            style="@style/Vault.Text.SectionHeader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Budget Notifications" />
+            <!-- Notifications Card -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/PremiumCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                        <TextView
-                            style="@style/Vault.Text.Caption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Alert me when I'm close to or over my monthly limit." />
-                    </LinearLayout>
-
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switchNotifications"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minWidth="@dimen/touch_target_min"
-                        android:minHeight="@dimen/touch_target_min" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:text="Notifications"
+                        android:textColor="@color/soft_gold"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-            <!-- ===== Recurring Transactions (Custom Feature 2) ===== -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Budget Alerts"
+                            android:textColor="@color/ivory_cream" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchNotifications"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            app:thumbTint="@color/soft_gold"
+                            app:trackTint="@color/dark_green_elevated" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Footer Actions -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRecurring"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/touch_target_min"
-                android:layout_marginTop="@dimen/space_md"
-                android:backgroundTint="@color/vault_blue"
-                android:text="Manage Recurring Transactions"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                app:cornerRadius="@dimen/radius_md"
-                app:icon="@android:drawable/ic_menu_rotate"
-                app:iconTint="@color/white" />
+                android:layout_height="64dp"
+                android:layout_marginTop="8dp"
+                android:text="RECURRING TRANSACTIONS"
+                android:textColor="@color/forest_green"
+                app:backgroundTint="@color/soft_gold"
+                app:cornerRadius="16dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogout"
-                style="?attr/materialButtonOutlinedStyle"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/touch_target_min"
-                android:layout_marginTop="@dimen/space_sm"
-                android:layout_marginBottom="@dimen/space_lg"
-                android:text="Log Out"
-                android:textAllCaps="false"
-                android:textColor="@color/vault_red"
-                app:cornerRadius="@dimen/radius_md" />
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                android:text="LOG OUT"
+                android:textColor="@color/expense_red" />
 
         </LinearLayout>
     </ScrollView>

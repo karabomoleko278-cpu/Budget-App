@@ -51,11 +51,11 @@ class RecurringAdapter(
 
         if (rule.isIncome) {
             holder.amount.text = "+ ${format.format(rule.amount)}"
-            holder.amount.setTextColor(context.getColor(R.color.vault_green))
-            holder.icon.setImageResource(R.drawable.ic_vault)
+            holder.amount.setTextColor(context.getColor(R.color.income_green))
+            holder.icon.setImageResource(R.drawable.ic_nav_wallet)
         } else {
             holder.amount.text = "- ${format.format(rule.amount)}"
-            holder.amount.setTextColor(context.getColor(R.color.vault_red))
+            holder.amount.setTextColor(context.getColor(R.color.expense_red))
             holder.icon.setImageResource(R.drawable.ic_receipt)
         }
 

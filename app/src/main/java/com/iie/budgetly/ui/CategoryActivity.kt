@@ -82,7 +82,7 @@ class CategoryActivity : AppCompatActivity() {
                     val amount = amountStr.toDoubleOrNull() ?: 0.0
                     if (amount > 0) {
                         lifecycleScope.launch {
-                            db.appDao().setGoals(Goal(userId = userId, categoryId = categoryId, amount = amount))
+                            db.appDao().upsertGoal(Goal(userId = userId, categoryId = categoryId, amount = amount))
                             Toast.makeText(this@CategoryActivity, "Budget saved", Toast.LENGTH_SHORT).show()
                         }
                     }

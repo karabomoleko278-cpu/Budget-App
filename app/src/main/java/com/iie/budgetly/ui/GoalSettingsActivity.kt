@@ -175,7 +175,7 @@ class GoalSettingsActivity : AppCompatActivity() {
                 val existingGoal = db.appDao().getGoalForCategory(userId, categoryId)
                 val goal = existingGoal?.copy(amount = amount)
                     ?: Goal(userId = userId, categoryId = categoryId, amount = amount)
-                val id = db.appDao().setGoals(goal)
+                val id = db.appDao().upsertGoal(goal)
                 RealtimeSyncManager.pushGoal(goal.copy(id = id))
                 toast("Budget saved")
                 loadBudgets()

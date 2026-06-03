@@ -4,38 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:background="@color/forest_green">
 
     <ImageButton
         android:id="@+id/btnBack"
-        style="@style/Vault.IconButton"
-        android:layout_marginStart="@dimen/space_md"
-        android:layout_marginTop="@dimen/space_md"
-        android:contentDescription="Back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@android:drawable/ic_menu_revert"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?android:attr/textColorPrimary" />
+        app:tint="@color/ivory_cream" />
 
     <TextView
         android:id="@+id/title"
-        style="@style/Vault.Text.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_sm"
+        android:layout_marginStart="12dp"
         android:text="Recurring Transactions"
+        android:textColor="@color/ivory_cream"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/btnBack"
         app:layout_constraintStart_toEndOf="@id/btnBack"
         app:layout_constraintTop_toTopOf="@id/btnBack" />
 
     <TextView
         android:id="@+id/emptyState"
-        style="@style/Vault.Text.Body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/space_lg"
+        android:layout_margin="24dp"
         android:gravity="center"
         android:text="No recurring transactions yet. Add salary, rent or subscriptions to post them automatically."
+        android:textColor="@color/ivory_cream"
+        android:alpha="0.7"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,10 +49,10 @@
         android:id="@+id/recurringRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/space_md"
+        android:layout_marginTop="16dp"
         android:clipToPadding="false"
-        android:paddingHorizontal="@dimen/space_md"
-        android:paddingBottom="@dimen/space_md"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/btnBack"
         app:layout_constraintBottom_toTopOf="@id/btnAddRecurring"
@@ -57,13 +61,14 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddRecurring"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/touch_target_min"
-        android:layout_margin="@dimen/space_md"
-        android:backgroundTint="@color/vault_blue"
+        android:layout_height="64dp"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/soft_gold"
         android:text="Add Recurring Transaction"
         android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:cornerRadius="@dimen/radius_md"
+        android:textColor="@color/forest_green"
+        android:textStyle="bold"
+        app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

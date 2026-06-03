@@ -1,13 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Base.Theme.Budgetly" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">@color/vault_blue</item>
-        <item name="android:windowBackground">@color/dark_background</item>
-        <item name="android:statusBarColor">@color/dark_background</item>
+        <item name="colorPrimary">@color/forest_green</item>
+        <item name="colorOnPrimary">@color/ivory_cream</item>
+        <item name="colorSecondary">@color/soft_gold</item>
+        <item name="colorOnSecondary">@color/forest_green</item>
+        <item name="android:windowBackground">@color/forest_green</item>
+        <item name="android:statusBarColor">@color/forest_green</item>
+        <item name="android:navigationBarColor">@color/forest_green</item>
     </style>
 
     <style name="PremiumCard" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardBackgroundColor">@color/dark_surface</item>
+        <item name="cardBackgroundColor">@color/dark_green_elevated</item>
         <item name="cardCornerRadius">24dp</item>
-        <item name="cardElevation">0dp</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+    <style name="GoldBalanceCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/soft_gold</item>
+        <item name="cardCornerRadius">28dp</item>
+        <item name="cardElevation">8dp</item>
     </style>
 </resources>

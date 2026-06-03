@@ -116,7 +116,7 @@ colours itself by zone via the pure `GoalStatusCalculator`:
 
 - **Indigo & Rose** design system: Indigo `#6366F1` primary, Rose `#F43F5E` accent, Emerald success,
   Amber caution — defined in `colors.xml` with a full dark-mode override in `values-night/colors.xml`.
-- **8dp spacing scale** and a **typography scale** (`dimens.xml` + `styles_vault.xml`).
+- **8dp spacing scale** and a **typography scale** (`dimens.xml`).
 - **Accessibility:** every interactive control uses the **48dp** minimum touch target.
 - Consolidated **Goals & Settings** hub (goals, category budgets, security and export in one place)
 

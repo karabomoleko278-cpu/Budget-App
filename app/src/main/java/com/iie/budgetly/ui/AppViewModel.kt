@@ -39,7 +39,7 @@ class AppViewModel(private val repository: AppRepository) : ViewModel() {
 
     fun setGoals(userId: Long, min: Double, max: Double) {
         viewModelScope.launch {
-            repository.setGoals(Goal(userId = userId, minGoal = min, maxGoal = max))
+            repository.upsertGoal(Goal(userId = userId, minGoal = min, maxGoal = max))
         }
     }
 }

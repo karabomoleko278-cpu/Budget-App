@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_nav_dashboard"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_budget"
+        android:icon="@drawable/ic_nav_wallet"
+        android:title="Wallets" />
+    <item
+        android:id="@+id/nav_analysis"
+        android:icon="@drawable/ic_nav_analytics"
+        android:title="Analysis" />
+    <item
+        android:id="@+id/nav_goals"
+        android:icon="@drawable/ic_nav_goals"
+        android:title="Goals" />
+</menu>

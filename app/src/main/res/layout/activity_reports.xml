@@ -1,157 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:background="@color/forest_green">
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        style="@style/Vault.IconButton"
-        android:layout_marginStart="@dimen/space_md"
-        android:layout_marginTop="@dimen/space_md"
-        android:contentDescription="Back"
-        android:src="@android:drawable/ic_menu_revert"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="?android:attr/textColorPrimary" />
-
-    <TextView
-        android:id="@+id/title"
-        style="@style/Vault.Text.Title"
-        android:layout_width="wrap_content"
+    <!-- Custom Top App Bar -->
+    <LinearLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_sm"
-        android:text="Spending Trend"
-        app:layout_constraintBottom_toBottomOf="@id/btnBack"
-        app:layout_constraintStart_toEndOf="@id/btnBack"
-        app:layout_constraintTop_toTopOf="@id/btnBack" />
+        android:orientation="horizontal"
+        android:padding="20dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/ivory_cream" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Financial Analysis"
+            android:textColor="@color/ivory_cream"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/space_md">
+            android:padding="16dp">
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/periodToggle"
+            <!-- Horizontal Tab Selector -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/periodTabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:selectionRequired="true"
-                app:singleSelection="true">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnDay"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/touch_target_min"
-                    android:layout_weight="1"
+                android:background="@android:color/transparent"
+                app:tabIndicatorColor="@color/soft_gold"
+                app:tabSelectedTextColor="@color/soft_gold"
+                app:tabTextColor="@color/ivory_cream"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabIndicatorHeight="4dp">
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tabDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Day" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnWeek"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/touch_target_min"
-                    android:layout_weight="1"
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tabWeek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Week" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnMonth"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/touch_target_min"
-                    android:layout_weight="1"
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tabMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Month" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+            </com.google.android.material.tabs.TabLayout>
 
+            <!-- Total spent with gold "outline" style -->
             <TextView
                 android:id="@+id/totalSpentText"
-                style="@style/Vault.Text.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_md"
-                android:text="Total: R 0.00" />
-
-            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_md"
-                android:layout_marginBottom="@dimen/space_lg"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:cardCornerRadius="@dimen/radius_lg"
-                app:cardElevation="2dp">
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:text="TOTAL: R 0.00"
+                android:textColor="@color/ivory_cream"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                android:shadowColor="@color/soft_gold"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1" />
+
+            <!-- Analysis Dashboard Card -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/PremiumCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/space_md">
+                    android:padding="20dp">
 
                     <TextView
-                        style="@style/Vault.Text.SectionHeader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cumulative Spend vs Goals" />
+                        android:text="Cumulative Spending"
+                        android:textColor="@color/soft_gold"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/lineChart"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/chart_height"
-                        android:layout_marginTop="@dimen/space_sm" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/space_sm"
-                        android:orientation="horizontal">
-
-                        <View
-                            android:layout_width="16dp"
-                            android:layout_height="3dp"
-                            android:layout_gravity="center_vertical"
-                            android:background="@color/vault_green" />
-
-                        <TextView
-                            style="@style/Vault.Text.Caption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/space_xs"
-                            android:layout_marginEnd="@dimen/space_md"
-                            android:text="Min goal" />
-
-                        <View
-                            android:layout_width="16dp"
-                            android:layout_height="3dp"
-                            android:layout_gravity="center_vertical"
-                            android:background="@color/vault_red" />
-
-                        <TextView
-                            style="@style/Vault.Text.Caption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/space_xs"
-                            android:text="Max goal" />
-                    </LinearLayout>
+                        android:layout_height="300dp"
+                        android:layout_marginTop="16dp" />
 
                     <TextView
                         android:id="@+id/emptyStateText"
-                        style="@style/Vault.Text.Body"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="@dimen/space_lg"
-                        android:text="No spending recorded for this period."
+                        android:padding="32dp"
+                        android:text="No data found for this period"
+                        android:textColor="@color/ivory_cream"
                         android:visibility="gone" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </ScrollView>

@@ -15,6 +15,6 @@ class AppRepository(private val appDao: AppDao) {
     fun getEntriesForPeriod(userId: Long, startDate: Long, endDate: Long) = 
         appDao.getEntriesForPeriod(userId, startDate, endDate)
 
-    suspend fun setGoals(goal: Goal) = appDao.setGoals(goal)
+    suspend fun upsertGoal(goal: Goal) = appDao.upsertGoal(goal)
     fun getGoalsForUser(userId: Long) = appDao.getGoalsForUser(userId)
 }

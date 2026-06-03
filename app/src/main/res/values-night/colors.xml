@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Dark-mode overrides for the Indigo & Rose palette. Redefining the semantic
-    vault_* tokens here keeps every screen consistent in dark mode, whether it
-    references ?attr/... or @color/vault_* directly.
--->
 <resources>
-    <!-- Indigo reads brighter on dark surfaces -->
-    <color name="vault_blue">#818CF8</color>
-    <color name="vault_blue_dark">#6366F1</color>
-    <color name="vault_blue_light">#A5B4FC</color>
+    <!-- Dark Mode Palette: Nature-Inspired -->
+    <color name="forest_green">#0D1F0D</color> <!-- Darker Forest Green -->
+    <color name="soft_gold">#D4AF37</color>
+    <color name="ivory_cream">#E0E0A0</color>  <!-- Muted Ivory -->
 
-    <!-- Surfaces / backgrounds (Slate) -->
-    <color name="vault_light_bg">#020617</color>
-    <color name="vault_card_bg">#0F172A</color>
-    <color name="surface">#0F172A</color>
-    <color name="divider">#1E293B</color>
+    <color name="dark_green_elevated">#152D15</color>
 
-    <!-- Status colours -->
-    <color name="vault_green">#34D399</color>
-    <color name="vault_amber">#FBBF24</color>
-    <color name="vault_red">#FB7185</color>
+    <color name="income_green">#66BB6A</color>
+    <color name="expense_red">#EF5350</color>
+    <color name="savings_blue">#42A5F5</color>
 
-    <!-- Text -->
-    <color name="vault_text_primary">#F1F5F9</color>
-    <color name="vault_text_secondary">#94A3B8</color>
-    <color name="text_secondary">#94A3B8</color>
+    <!-- Theme Aliases -->
+    <color name="primary">@color/forest_green</color>
+    <color name="secondary">@color/soft_gold</color>
+    <color name="background">@color/forest_green</color>
+    <color name="surface">@color/dark_green_elevated</color>
+    <color name="on_primary">@color/ivory_cream</color>
+    <color name="on_background">@color/ivory_cream</color>
+    <color name="on_surface">@color/ivory_cream</color>
 
-    <color name="primary">#818CF8</color>
-    <color name="secondary">#FB7185</color>
+    <!-- Legacy aliases -->
+    <color name="divider">@color/soft_gold</color>
+    <color name="text_secondary">@color/ivory_cream</color>
 </resources>
