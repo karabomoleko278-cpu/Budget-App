@@ -138,10 +138,10 @@ APKs, and uploads them as artifacts.
 1. Open the project in **Android Studio** (JDK 17).
 2. **Firebase:** a template `app/google-services.json` is committed so the project builds out of the
    box and runs in **local-only mode**. To enable live cloud sync, register an Android app with
-   package **`com.iie.vaultquest`** in a Firestore project and replace the template file.
+   package **`com.iie.budgetly`** in a Firestore project and replace the template file.
 3. Run on a device/emulator (API 24+). Tests: `./gradlew testDebugUnitTest`.
 
-> *Note:* the internal package id remains `com.iie.vaultquest` (changing it is unrelated to the app's
+> *Note:* the internal package id remains `com.iie.budgetly` (changing it is unrelated to the app's
 > display name and avoids a data-wipe); the app is branded **Budgetly** everywhere a user can see.
 
 ---

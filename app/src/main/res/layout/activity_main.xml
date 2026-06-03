@@ -283,7 +283,7 @@
                         android:textStyle="bold"
                         android:text="Set a monthly budget to start tracking" />
 
-                    <com.iie.vaultquest.ui.components.LinearBudgetBar
+                    <com.iie.budgetly.ui.components.LinearBudgetBar
                         android:id="@+id/budgetBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

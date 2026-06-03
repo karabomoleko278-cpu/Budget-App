@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:123456789012:android:abc123def4567890abcdef",
         "android_client_info": {
-          "package_name": "com.iie.vaultquest"
+          "package_name": "com.iie.budgetly"
         }
       },
       "oauth_client": [],

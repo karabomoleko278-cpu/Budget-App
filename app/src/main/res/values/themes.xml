@@ -1,11 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.VaultQuest" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Base.Theme.Budgetly" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/vault_blue</item>
         <item name="android:windowBackground">@color/vault_light_bg</item>
         <item name="android:statusBarColor">@color/vault_blue</item>
     </style>
 
-    <style name="Theme.VaultQuest" parent="Base.Theme.VaultQuest" />
+    <style name="Theme.Budgetly" parent="Base.Theme.Budgetly" />
 
     <style name="CircleImage">
         <item name="cornerSize">50%</item>

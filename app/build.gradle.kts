@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.iie.vaultquest"
+    namespace = "com.iie.budgetly"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.iie.vaultquest"
+        applicationId = "com.iie.budgetly"
         minSdk = 24
         targetSdk = 34
         versionCode = 2
