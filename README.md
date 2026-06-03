@@ -1,6 +1,6 @@
 # 💸 Budgetly — Smart Student Budget Tracker
 
-> **PROG7313 · Portfolio of Evidence (Final) · Group 13**
+> **PROG7313 · Portfolio of Evidence (Final) · Group ""**
 > A modern, offline-first Android budgeting app built in Kotlin with a Cloud Firestore backend, analytical charting, a colour-coded goal gauge, biometric security and CSV export — dressed in a premium **Indigo & Rose** theme.
 
 <p>
@@ -38,11 +38,10 @@ backed up and portable in the cloud.
 | 1 | **Online database** | Cloud Firestore mirror of every entry/category/goal, with **offline persistence** so writes queue and flush automatically. |
 | 2 | **Analytical graphing** | MPAndroidChart **bar chart** of *amount spent per category* over **Day / Week / Month**, with **Min & Max goal lines** on the same axis. |
 | 3 | **Visual goal indicator** | Custom-drawn **circular gauge** (Canvas) that turns **Green / Amber / Red** based on where this month's spend sits between the Min and Max thresholds. |
-| 4 | **Two custom features** | **Biometric App Lock** + **CSV Export & Share** (full implementations — see §6). |
-| 5 | **UI/UX & branding** | Premium **Indigo & Rose** palette, 8dp spacing scale, typography scale, 48dp touch targets, full dark-mode parity. |
-| 6 | **Stability** | DB / chart / network code wrapped in `try/catch` + `CoroutineExceptionHandler` with structured `Log.d`/`Log.e`. |
-| 7 | **CI/CD** | `.github/workflows/build.yml` runs unit tests + builds the APK on every push/PR to `main`. |
-| 8 | **Documentation** | This README. |
+| 4 | **UI/UX & branding** | Premium **Indigo & Rose** palette, 8dp spacing scale, typography scale, 48dp touch targets, full dark-mode parity. |
+| 5 | **Stability** | DB / chart / network code wrapped in `try/catch` + `CoroutineExceptionHandler` with structured `Log.d`/`Log.e`. |
+| 6 | **CI/CD** | `.github/workflows/build.yml` runs unit tests + builds the APK on every push/PR to `main`. |
+| 7 | **Documentation** | This README. |
 
 ---
 
@@ -114,40 +113,17 @@ goals are drawn as dashed `LimitLine`s on the same axis. A pie chart shows the c
 **`GoalGaugeView`** is a custom `Canvas` view that sweeps a 270° arc proportional to `spent / max` and
 colours itself by zone via the pure `GoalStatusCalculator`:
 
-| Condition | Zone | Colour |
-| --- | --- | --- |
-| `spent > max` | Breached | 🔴 Rose |
-| `spent ≥ 90% of max` | Near limit | 🟠 Amber |
-| `min ≤ spent < 90% max` | **Safe (between goals)** | 🟢 Emerald |
-| `spent < min` | Below minimum | 🟠 Amber |
-
----
-
 ## 5. UI/UX & Branding
 
 - **Indigo & Rose** design system: Indigo `#6366F1` primary, Rose `#F43F5E` accent, Emerald success,
   Amber caution — defined in `colors.xml` with a full dark-mode override in `values-night/colors.xml`.
 - **8dp spacing scale** and a **typography scale** (`dimens.xml` + `styles_vault.xml`).
 - **Accessibility:** every interactive control uses the **48dp** minimum touch target.
-- Consolidated **Goals & Settings** hub (goals, category budgets, security and export in one place).
+- Consolidated **Goals & Settings** hub (goals, category budgets, security and export in one place)
 
 ---
 
-## 6. ⭐ Custom Features (Built in Full)
-
-### Custom Feature 1 — 🔐 Biometric App Lock
-When enabled (toggle in **Goals & Settings**), Budgetly requires **fingerprint / face** to open.
-`BiometricAuthenticator` wraps AndroidX `BiometricPrompt`; `SessionManager` stores the enabled flag
-and the last user; `LoginActivity` shows the prompt on launch with a **"Use password"** fallback.
-
-### Custom Feature 2 — 📤 CSV Export & Share
-The **"Export Transactions (CSV)"** button writes an RFC-4180 CSV (`CsvBuilder`, unit-tested, with
-proper escaping) via `ExportManager` and shares it through the FileProvider — to email, Drive,
-WhatsApp, etc. Columns: `Date, Type, Category, Description, Amount`.
-
----
-
-## 7. Stability & 8. Continuous Integration
+## 6. Stability & 8. Continuous Integration
 
 All database, chart-rendering and network calls are wrapped in `try/catch` and/or
 `CoroutineExceptionHandler` with structured logging, so failures are logged, never fatal.
@@ -158,7 +134,7 @@ APKs, and uploads them as artifacts.
 
 ---
 
-## 9. Build & Run
+## 7. Build & Run
 
 1. Open the project in **Android Studio** (JDK 17).
 2. **Firebase:** a template `app/google-services.json` is committed so the project builds out of the
@@ -171,15 +147,4 @@ APKs, and uploads them as artifacts.
 
 ---
 
-## 👥 Team — Group 13
 
-| Member | Role |
-| --- | --- |
-| **Karabo Moleko** | Lead Developer — core functionality, Firebase, charts & gauge |
-| **Thandolwethu Magale** | Project Manager & QA |
-| **Oratile Mahole** | UI/UX Designer — Indigo & Rose design system |
-| **Bill Kitibwa** | Test Engineer — unit tests & CI |
-
----
-
-*Built for PROG7313 — The Independent Institute of Education.*
